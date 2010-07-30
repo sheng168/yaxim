@@ -21,7 +21,6 @@ import android.graphics.drawable.TransitionDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -40,19 +39,20 @@ import android.widget.Toast;
 public class ChatWindow extends ListActivity implements OnKeyListener,
 		TextWatcher {
 
-	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class.getName() + ".username";
-	
+	public static final String INTENT_EXTRA_USERNAME = ChatWindow.class
+			.getName() + ".username";
+
 	private static final String TAG = "ChatWindow";
 	private static final int NOTIFY_ID = 0;
 	private static final String[] PROJECTION_FROM = new String[] {
 			ChatProvider.ChatConstants._ID, ChatProvider.ChatConstants.DATE,
 			ChatProvider.ChatConstants.FROM_ME, ChatProvider.ChatConstants.JID,
-			ChatProvider.ChatConstants.MESSAGE, ChatProvider.ChatConstants.HAS_BEEN_READ };
+			ChatProvider.ChatConstants.MESSAGE,
+			ChatProvider.ChatConstants.HAS_BEEN_READ };
 
 	private static final int[] PROJECTION_TO = new int[] { R.id.chat_date,
 			R.id.chat_from, R.id.chat_message };
 
-	private Handler mHandler = null;
 	private Button mSendButton = null;
 	private EditText mChatInput = null;
 	private String mWithJabberID = null;
@@ -68,21 +68,20 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 
 		setContentView(R.layout.mainchat);
 
-		mHandler = new Handler();
 		registerForContextMenu(getListView());
 		setContactFromUri();
 		registerXMPPService();
 		setNotificationManager();
 		setUserInput();
 		setSendButton();
-		
+
 		String titleUserid;
 		if (mUserScreenName != null && !mUserScreenName.equals(mWithJabberID)) {
 			titleUserid = mUserScreenName + " (" + mWithJabberID + ")";
 		} else {
 			titleUserid = mWithJabberID;
 		}
-		
+
 		setTitle(getText(R.string.chat_titlePrefix) + " " + titleUserid);
 		setChatWindowAdapter();
 	}
@@ -193,8 +192,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	}
 
 	private void markAsRead(int id) {
-		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY
-			+ "/" + ChatProvider.TABLE_NAME + "/" + id);
+		Uri rowuri = Uri.parse("content://" + ChatProvider.AUTHORITY + "/"
+				+ ChatProvider.TABLE_NAME + "/" + id);
 		Log.d(TAG, "markAsRead: " + rowuri);
 		ContentValues values = new ContentValues();
 		values.put(ChatConstants.HAS_BEEN_READ, true);
@@ -204,8 +203,8 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 	class ChatWindowAdapter extends SimpleCursorAdapter {
 		String mScreenName, mJID;
 
-		ChatWindowAdapter(Cursor cursor, String[] from, int[] to,
-				String JID, String screenName) {
+		ChatWindowAdapter(Cursor cursor, String[] from, int[] to, String JID,
+				String screenName) {
 			super(ChatWindow.this, android.R.layout.simple_list_item_1, cursor,
 					from, to);
 			mScreenName = screenName;
@@ -250,14 +249,16 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			String from = jid;
 			if (jid.equals(mJID))
 				from = mScreenName;
-			wrapper.populateFrom(date, from_me != 0, from, message, has_been_read != 0);
+			wrapper.populateFrom(date, from_me != 0, from, message,
+					has_been_read != 0);
 
 			return row;
 		}
 	}
 
 	private String getDateString(long milliSeconds) {
-		SimpleDateFormat dateFormater = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+		SimpleDateFormat dateFormater = new SimpleDateFormat(
+				"yy-MM-dd HH:mm:ss");
 		Date date = new Date(milliSeconds);
 		return dateFormater.format(date);
 	}
@@ -273,9 +274,10 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 			this.mRowView = row;
 		}
 
-		void populateFrom(String date, boolean from_me, String from, String message,
-				boolean has_been_read) {
-			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message + ")");
+		void populateFrom(String date, boolean from_me, String from,
+				String message, boolean has_been_read) {
+			Log.i(TAG, "populateFrom(" + from_me + ", " + from + ", " + message
+					+ ")");
 			getDateView().setText(date);
 			if (from_me) {
 				getDateView().setTextColor(0xff8888ff);
@@ -294,16 +296,15 @@ public class ChatWindow extends ListActivity implements OnKeyListener,
 				} else {
 					layers[1] = new ColorDrawable(0x00000000);
 				}
-				TransitionDrawable backgroundColorAnimation = new
-					TransitionDrawable(layers);
+				TransitionDrawable backgroundColorAnimation = new TransitionDrawable(
+						layers);
 				mRowView.setBackgroundDrawable(backgroundColorAnimation);
 				backgroundColorAnimation.setCrossFadeEnabled(true);
 				backgroundColorAnimation.startTransition(2000);
 			}
 			getMessageView().setText(message);
 		}
-        
-		
+
 		TextView getDateView() {
 			if (mDateView == null) {
 				mDateView = (TextView) mRowView.findViewById(R.id.chat_date);
