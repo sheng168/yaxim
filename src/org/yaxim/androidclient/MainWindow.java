@@ -13,6 +13,7 @@ import org.yaxim.androidclient.dialogs.AddRosterItemDialog;
 import org.yaxim.androidclient.dialogs.ChangeStatusDialog;
 import org.yaxim.androidclient.dialogs.FirstStartDialog;
 import org.yaxim.androidclient.dialogs.GroupNameView;
+import org.yaxim.androidclient.map.MapWindow;
 import org.yaxim.androidclient.preferences.MainPrefs;
 import org.yaxim.androidclient.service.XMPPService;
 import org.yaxim.androidclient.util.AdapterConstants;
@@ -92,7 +93,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.i(TAG, getString(R.string.build_version));
+//		Log.i(TAG, getString(R.string.build_version));
 		mConfig = YaximApplication.getConfig(this);
 		mTheme = mConfig.theme;
 		setTheme(mConfig.getTheme());
@@ -700,7 +701,8 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 
 		case R.id.menu_about:
-			aboutDialog();
+//			aboutDialog();
+			startActivity(new Intent(this, MapWindow.class));
 			return true;
 
 		}

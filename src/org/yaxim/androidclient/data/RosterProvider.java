@@ -2,6 +2,7 @@ package org.yaxim.androidclient.data;
 
 import java.util.ArrayList;
 
+import org.yaxim.androidclient.data.ChatProvider.ChatConstants;
 import org.yaxim.androidclient.util.LogConstants;
 
 import android.content.ContentProvider;
@@ -248,7 +249,7 @@ public class RosterProvider extends ContentProvider {
 	private static class RosterDatabaseHelper extends SQLiteOpenHelper {
 
 		private static final String DATABASE_NAME = "roster.db";
-		private static final int DATABASE_VERSION = 4;
+		private static final int DATABASE_VERSION = 5;
 
 		public RosterDatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -262,9 +263,12 @@ public class RosterProvider extends ContentProvider {
 					+ RosterConstants._ID
 					+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
 					+ RosterConstants.JID + " TEXT UNIQUE ON CONFLICT REPLACE, "
-					+ RosterConstants.ALIAS
-					+ " TEXT, " + RosterConstants.STATUS_MODE + " INTEGER, "
+					+ RosterConstants.ALIAS + " TEXT, " 
+					+ RosterConstants.STATUS_MODE + " INTEGER, "
 					+ RosterConstants.STATUS_MESSAGE + " TEXT, "
+					+ RosterConstants.LAT + " INTEGER, "
+					+ RosterConstants.LON + " INTEGER, "
+					+ RosterConstants.ACCURACY + " INTEGER, "
 					+ RosterConstants.GROUP + " TEXT);");
 			db.execSQL("CREATE INDEX idx_roster_group ON " + TABLE_ROSTER
 				        + " (" + RosterConstants.GROUP + ")");
@@ -287,7 +291,6 @@ public class RosterProvider extends ContentProvider {
 	}
 
 	public static final class RosterConstants implements BaseColumns {
-
 		private RosterConstants() {
 		}
 
@@ -300,6 +303,10 @@ public class RosterProvider extends ContentProvider {
 		public static final String STATUS_MESSAGE = "status_message";
 		public static final String GROUP = "roster_group";
 
+		public static final String LAT = "lat";
+		public static final String LON = "lon";
+		public static final String ACCURACY = "accuracy";
+		
 		public static final String DEFAULT_SORT_ORDER = STATUS_MODE + " DESC, " + ALIAS;
 
 		public static ArrayList<String> getRequiredColumns() {

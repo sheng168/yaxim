@@ -49,5 +49,12 @@
 			android:singleLine="true"
 			/>
 	</LinearLayout>
+
+	<CheckBox
+	    android:id="@+id/checkBoxLocation"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="Include Geo Location" />
+
 </LinearLayout>
 </ScrollView>
