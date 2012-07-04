@@ -145,8 +145,8 @@ public class SmackableImp implements Smackable {
 			}
 		};
 		
-//		locationManager.requestLocationUpdates(provider , minTime, minDistance,
-//				locationListener, Looper.getMainLooper());
+		locationManager.requestLocationUpdates(provider , minTime, minDistance,
+				locationListener, Looper.getMainLooper());
 		
 		// allow custom server / custom port to override SRV record
 		if (mConfig.customServer.length() > 0 || mConfig.port != PreferenceConstants.DEFAULT_PORT_INT)
