@@ -32,6 +32,7 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 	public String statusMode;
 	public String statusMessage;
+	public boolean location;
 
 	public boolean isLEDNotify;
 	public String vibraNotify;
@@ -101,6 +102,8 @@ public class YaximConfiguration implements OnSharedPreferenceChangeListener {
 
 		this.priority = validatePriority(XMPPHelper.tryToParseInt(prefs
 				.getString(PreferenceConstants.PRIORITY, "0"), 0));
+		this.location = prefs.getBoolean(PreferenceConstants.LOCATION, false);
+
 
 		this.foregroundService = prefs.getBoolean(PreferenceConstants.FOREGROUND, true);
 

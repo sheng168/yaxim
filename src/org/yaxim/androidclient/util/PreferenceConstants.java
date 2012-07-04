@@ -23,4 +23,5 @@ public class PreferenceConstants {
 	public final static String STATUS_MODE = "status_mode";
 	public final static String STATUS_MESSAGE = "status_message";
 	public final static String THEME = "theme";
+	public static final String LOCATION = "location";
 }

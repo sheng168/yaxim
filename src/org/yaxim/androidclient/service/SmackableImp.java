@@ -113,41 +113,40 @@ public class SmackableImp implements Smackable {
 			Service service) {
 		this.mConfig = config;
 		locationManager = (LocationManager) service.getSystemService(Context.LOCATION_SERVICE);
-		List<String> providers = locationManager.getAllProviders();
-		locationManager.getProvider(LocationManager.GPS_PROVIDER);
-		String provider = LocationManager.GPS_PROVIDER;
+//		List<String> providers = locationManager.getAllProviders();
+//		locationManager.getProvider(LocationManager.GPS_PROVIDER);
+		String provider = LocationManager.PASSIVE_PROVIDER;
 		
 		long minTime = 5;
 		float minDistance = 10;
 		
 		Log.d(TAG, "thread " + Thread.currentThread().getName());
 //		locationManager.re/
-		locationManager.requestLocationUpdates(provider , minTime, minDistance,
-				new LocationListener() {
+		LocationListener locationListener = new LocationListener() {
 			@Override
 			public void onStatusChanged(String provider, int status, Bundle extras) {
-				// TODO Auto-generated method stub
-				
+					// don't care
 			}
 			
 			@Override
 			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
-				
+					// don't care
 			}
 			
 			@Override
 			public void onProviderDisabled(String provider) {
-				// TODO Auto-generated method stub
-				
+					// don't care
 			}
 			
 			@Override
 			public void onLocationChanged(Location location) {
-				Log.d(TAG, "onLocationChanged " + location);
-				setStatusFromConfig();
+					Log.d(TAG, "onLocationChanged " + location);
+					setStatusFromConfig();
 			}
-		}, Looper.getMainLooper());
+		};
+		
+//		locationManager.requestLocationUpdates(provider , minTime, minDistance,
+//				locationListener, Looper.getMainLooper());
 		
 		// allow custom server / custom port to override SRV record
 		if (mConfig.customServer.length() > 0 || mConfig.port != PreferenceConstants.DEFAULT_PORT_INT)
@@ -390,25 +389,31 @@ public class SmackableImp implements Smackable {
 		presence.setStatus(mConfig.statusMessage);
 		presence.setPriority(mConfig.priority);
 		
-		{ // TODO
+		if (mConfig.location) { // TODO
+			Log.d(TAG, "location enabled");
 			String locationProvider = LocationManager.NETWORK_PROVIDER;
 			// Or use LocationManager.GPS_PROVIDER
 
 			Location loc = locationManager.getLastKnownLocation(locationProvider);
 			if (loc == null)
-				loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+				loc = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 				
 			if (loc != null) {
+				Log.d(TAG, "including location " + loc);
 				int lat = (int)(loc.getLatitude() * 1e6);
 				int lon = (int)(loc.getLongitude() * 1e6);
+				int accuracy = (int)loc.getAccuracy();
 				
 				presence.setProperty("lat", lat);
 				presence.setProperty("lon", lon);
-				presence.setProperty("accuracy", loc.getAccuracy());
+				presence.setProperty("accuracy", accuracy);
+			} else {
+				Log.d(TAG, "no location " + loc);
 			}
 		}
 		
-		mXMPPConnection.sendPacket(presence);
+		if (mXMPPConnection != null)
+			mXMPPConnection.sendPacket(presence);
 	}
 
 	public void sendOfflineMessages() {

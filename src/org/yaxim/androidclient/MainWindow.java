@@ -581,6 +581,10 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return mConfig.priority;
 	}
 
+	public boolean getLocation() {
+		return mConfig.location;
+	}
+
 	public static String getStatusTitle(Context context, String status, String statusMessage) {
 		status = context.getString(StatusMode.fromString(status).getTextId());
 
@@ -591,7 +595,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 		return status;
 	}
 
-	public void setAndSaveStatus(StatusMode statusMode, String message, int priority) {
+	public void setAndSaveStatus(StatusMode statusMode, String message, int priority, boolean location) {
 		setStatus(statusMode, message);
 
 
@@ -602,6 +606,7 @@ public class MainWindow extends SherlockExpandableListActivity {
 			prefedit.putString(PreferenceConstants.STATUS_MODE, statusMode.name());
 		prefedit.putString(PreferenceConstants.STATUS_MESSAGE, message);
 		prefedit.putString(PreferenceConstants.PRIORITY, String.valueOf(priority));
+		prefedit.putBoolean(PreferenceConstants.LOCATION, location);
 		prefedit.commit();
 
 		// check if we are connected and want to go offline

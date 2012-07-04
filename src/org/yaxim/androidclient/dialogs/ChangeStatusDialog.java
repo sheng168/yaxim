@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ public class ChangeStatusDialog extends AlertDialog {
 	private final EditText mPriority;
 
 	private final MainWindow mContext;
+
+	private CheckBox mLocation;
 
 	public ChangeStatusDialog(final MainWindow context) {
 		super(context);
@@ -68,6 +71,9 @@ public class ChangeStatusDialog extends AlertDialog {
 
 		mPriority = (EditText) group.findViewById(R.id.statusview_prio);
 		mPriority.setText("" + context.getAccountPriority());
+		
+		mLocation = (CheckBox) group.findViewById(R.id.checkBoxLocation);
+		mLocation.setChecked(context.getLocation());
 
 		setTitle(R.string.statuspopup_name);
 		setView(group);
@@ -85,8 +91,9 @@ public class ChangeStatusDialog extends AlertDialog {
 			StatusMode status = (StatusMode) mStatus.getSelectedItem();
 			String message = mMessage.getText().toString();
 			int priority = XMPPHelper.tryToParseInt(mPriority.getText().toString(), 0);
-
-			mContext.setAndSaveStatus(status, message, priority);
+			boolean location = mLocation.isChecked();
+			
+			mContext.setAndSaveStatus(status, message, priority, location);
 		}
 	}
 
