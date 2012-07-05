@@ -24,7 +24,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_below="@+id/mapview"
 		    android:text="OK"
-		    android:visibility="visible" >
+		    android:visibility="gone" >
 </Button>
 	
 	</LinearLayout>

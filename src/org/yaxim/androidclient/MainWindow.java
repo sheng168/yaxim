@@ -706,10 +706,12 @@ public class MainWindow extends SherlockExpandableListActivity {
 			return true;
 
 		case R.id.menu_about:
-//			aboutDialog();
-			startActivity(new Intent(this, MapWindow.class));
+			aboutDialog();
 			return true;
 
+		case R.id.menu_map:
+			startActivity(new Intent(this, MapWindow.class));
+			return true;
 		}
 
 		return false;

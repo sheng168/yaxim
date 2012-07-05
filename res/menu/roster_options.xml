@@ -3,6 +3,10 @@
 		android:alphabeticShortcut="o"
 		android:icon="@android:drawable/ic_menu_delete" android:showAsAction="ifRoom"/>
 
+	<item android:id="@+id/menu_map" android:title="Map View"
+		android:alphabeticShortcut="m"
+		android:icon="@android:drawable/ic_menu_compass" android:showAsAction="ifRoom"/>
+	
 	<item android:id="@+id/menu_connect" android:title="@string/Menu_connect"
 		android:alphabeticShortcut="c"
 		android:icon="@drawable/ic_menu_plug"/>
